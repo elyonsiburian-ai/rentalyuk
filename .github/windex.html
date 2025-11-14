@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Sewa</title>
+    
+    <!-- Memuat Tailwind CSS untuk styling modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Memuat font Inter untuk tampilan yang bersih -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Konfigurasi kustom untuk Tailwind (opsional, tapi bagus) -->
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Diubah ke bg-gray-900 (Hitam/Gelap) */
+        }
+    </style>
+</head>
+<body class="text-gray-100"> <!-- Diubah ke text-gray-100 (Teks Terang) -->
+
+    <!-- BAGIAN LANDING PAGE (BARU) -->
+    <section id="landing-page" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center text-center p-4 transition-opacity duration-700 ease-out">
+        <div class="space-y-6">
+            <h1 class="text-6xl font-bold text-blue-500">RentalYuk</h1>
+            <p class="text-xl text-gray-300">Solusi Rental PlayStation Anda.</p>
+            <button id="enter-dashboard-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg text-lg transition-transform transform hover:scale-105">
+                Masuk ke Dashboard
+            </button>
+        </div>
+    </section>
+
+    <!-- KONTEN UTAMA APLIKASI (Dibungkus dan disembunyikan) -->
+    <!-- (DIPERBAIKI) Wrapper utama diubah menjadi flex layout untuk sidebar -->
+    <div id="main-content" class="hidden flex h-screen">
+
+        <!-- (BARU) BAGIAN SIDEBAR NAVIGASI KIRI -->
+        <aside class="w-64 flex-shrink-0 bg-gray-800 p-6 hidden md:block"> <!-- Sembunyikan di HP, tampilkan di desktop -->
+            <h1 class="text-3xl font-bold text-blue-500 mb-10">RentalYuk</h1>
+            <nav class="space-y-2">
+                <!-- Link Dashboard (Aktif) -->
+                <a href="#" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold" aria-current="page">
+                    <!-- Ikon Indikator -->
+                    <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <!-- Link Inventaris -->
+                <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium transition-colors">
+                    <!-- Ikon Indikator -->
+                    <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-1.414 1.414a1 1 0 01-.707.293H10.414a1 1 0 01-.707-.293l-1.414-1.414a1 1 0 00-.707-.293H4m16 0v.01" />
+                    </svg>
+                    <span>Inventaris</span>
+                </a>
+                <!-- Link Laporan -->
+                <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium transition-colors">
+                    <!-- Ikon Indikator -->
+                    <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- (BARU) Wrapper untuk konten utama yang bisa di-scroll -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            
+            <!-- (DIHAPUS) BAGIAN HEADER / NAVIGASI LAMA SUDAH DIHAPUS -->
+
+            <!-- KONTEN UTAMA -->
+            <!-- (DIPERBAIKI) Tag <main> diganti menjadi area konten scrollable -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-900 p-8">
+                
+                <h2 class="text-3xl font-semibold mb-6 text-white">Dashboard Manajemen</h2>
+
+                <!-- (DIPERBAIKI) KARTU STATISTISTIK YANG HILANG -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Kartu Total Barang -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex items-center">
+                        <div class="p-3 rounded-full bg-blue-600 bg-opacity-30 text-blue-400 mr-4">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-400">Total Barang</p>
+                            <p id="stat-total-items" class="text-2xl font-bold text-white">0</p>
+                        </div>
+                    </div>
+                    <!-- Kartu Disewa -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex items-center">
+                        <div class="p-3 rounded-full bg-yellow-600 bg-opacity-30 text-yellow-400 mr-4">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-400">Sedang Disewa</p>
+                            <p id="stat-on-rent" class="text-2xl font-bold text-white">0</p>
+                        </div>
+                    </div>
+                    <!-- Kartu Tersedia -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex items-center">
+                        <div class="p-3 rounded-full bg-green-600 bg-opacity-30 text-green-400 mr-4">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-400">Tersedia</p>
+                            <p id="stat-available" class="text-2xl font-bold text-white">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- (DIPERBAIKI) WRAPPER GRID UTAMA YANG HILANG -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+                    <!-- KOLOM KIRI (Wrapper untuk Sewa Aktif & Histori) -->
+                    <div class="lg:col-span-2 flex flex-col gap-8">
+
+                        <!-- BOX 1: DAFTAR SEWA AKTIF -->
+                        <!-- (DIPERBAIKI) Struktur wrapper box yang hilang -->
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-xl font-semibold text-white">Daftar Sewa Aktif</h3>
+                                <button id="addRentalBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition-all">
+                                    + Tambah Sewa
+                                </button>
+                            </div>
+                            <!-- Kontainer tabel agar responsif -->
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-700"> <!-- Diubah ke divide-gray-700 -->
+                                    <thead class="bg-gray-700"> <!-- Diubah ke bg-gray-700 -->
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nama Barang</th> <!-- Diubah ke text-gray-300 -->
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Penyewa</th> <!-- Diubah ke text-gray-300 -->
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Tgl Kembali</th> <!-- Diubah ke text-gray-300 -->
+                                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Aksi</th> <!-- Diubah ke text-gray-300 -->
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rentals-table-body" class="bg-gray-800 divide-y divide-gray-700"> <!-- Diubah ke bg-gray-800, divide-gray-700 -->
+                                        <!-- Data sewa akan di-render oleh JavaScript di sini -->
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data sewa aktif.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> <!-- (DIPERBAIKI) Tag penutup box -->
+
+                <!-- BOX 2: HISTORI SEWAAN (BARU) -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4">Histori Sewaan</h3>
+                    <div class="overflow-x-auto max-h-64 overflow-y-auto"> <!-- Diberi batas tinggi dan scroll -->
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-700">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Barang</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Penyewa</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body" class="bg-gray-800 divide-y divide-gray-700">
+                                <!-- Data histori akan di-render oleh JavaScript di sini -->
+                                <tr><td colspan="3" class="px-4 py-3 text-center text-gray-500">Belum ada histori.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div> <!-- Akhir dari wrapper kolom kiri -->
+
+
+            <!-- KOLOM KANAN: DAFTAR RENTALAN (NAMA DIUBAH) -->
+            <div class="lg:col-span-1 bg-gray-800 p-6 rounded-lg shadow-lg"> <!-- Diubah ke bg-gray-800 -->
+                <h3 class="text-xl font-semibold text-white mb-4">Daftar Rentalan</h3> <!-- Diubah dari Inventaris -->
+                <!-- Kontainer tabel agar responsif -->
+                <div class="overflow-x-auto max-h-96 overflow-y-auto">
+                    <table class="min-w-full divide-y divide-gray-700"> <!-- Diubah ke divide-gray-700 -->
+                        <thead class="bg-gray-700"> <!-- Diubah ke bg-gray-700 -->
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nama</th> <!-- Diubah ke text-gray-300 -->
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th> <!-- Diubah ke text-gray-300 -->
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body" class="bg-gray-800 divide-y divide-gray-700"> <!-- Diubah ke bg-gray-800, divide-gray-700 -->
+                            <!-- Data inventaris akan di-render oleh JavaScript di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- (DIPINDAH) Footer dipindah ke dalam <main> -->
+        <footer class="text-center text-gray-400 py-6 mt-8">
+            © 2025 RentalYuk. Dibuat dengan cinta untuk pemula.
+        </footer>
+    
+    </main> <!-- (DIUBAH) Tag penutup main yang lama dipindah ke sini -->
+    
+    <!-- (DIHAPUS) Footer yang lama sudah dipindah -->
+
+    </div> <!-- Akhir dari wrapper #main-content -->
+
+    <!-- MODAL UNTUK TAMBAH SEWA -->
+    <!-- Awalnya disembunyikan (hidden) dan akan ditampilkan dengan JS -->
+    <div id="rental-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center p-4 z-50"> <!-- Opasitas digelapkan -->
+        <div class="bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-md"> <!-- Diubah ke bg-gray-800 -->
+            
+            <h4 class="text-2xl font-semibold mb-6 text-white">Formulir Sewa Baru</h4> <!-- Pastikan teks putih -->
+            
+            <form id="rental-form">
+                <div class="space-y-4">
+                    <!-- Pilihan Barang -->
+                    <div>
+                        <label for="item-select" class="block text-sm font-medium text-gray-300 mb-1">Pilih Barang (Hanya yang tersedia)</label> <!-- Diubah ke text-gray-300 -->
+                        <select id="item-select" name="itemId" required class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"> <!-- Diubah ke tema gelap -->
+                            <!-- Opsi barang akan di-render oleh JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <!-- Nama Penyewa -->
+                    <div>
+                        <label for="renter-name" class="block text-sm font-medium text-gray-300 mb-1">Nama Penyewa</label> <!-- Diubah ke text-gray-300 -->
+                        <input type="text" id="renter-name" name="renterName" required placeholder="Contoh: Budi" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"> <!-- Diubah ke tema gelap -->
+                    </div>
+                    
+                    <!-- Tanggal Kembali -->
+                    <div>
+                        <label for="due-date" class="block text-sm font-medium text-gray-300 mb-1">Tanggal Kembali</label> <!-- Diubah ke text-gray-300 -->
+                        <input type="date" id="due-date" name="dueDate" required class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" style="color-scheme: dark;"> <!-- Diubah ke tema gelap + style -->
+                    </div>
+                </div>
+
+                <!-- Tombol Aksi Form -->
+                <div class="flex justify-end gap-4 mt-8">
+                    <button type="button" id="cancelBtn" class="bg-gray-600 hover:bg-gray-500 text-gray-100 font-medium py-2 px-5 rounded-lg transition-all"> <!-- Diubah ke tema gelap -->
+                        Batal
+                    </button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-lg shadow-md transition-all">
+                        Simpan Sewa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- BAGIAN JAVASCRIPT -->
+    <script>
+        // Menunggu hingga seluruh dokumen HTML dimuat sebelum menjalankan skrip
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // === 1. DATA SIMULASI (Mock Data) ===
+            // Di aplikasi nyata, data ini akan datang dari database
+            let inventory = [
+                { id: 'PS1-01', name: 'PlayStation 1', category: 'Konsol', status: 'Available' },
+                { id: 'PS2-01', name: 'PlayStation 2', category: 'Konsol', status: 'Available' },
+                { id: 'PS2-02', name: 'PlayStation 2', category: 'Konsol', status: 'Available' }, <!-- Ditambah untuk contoh histori -->
+                { id: 'PS3-01', name: 'PlayStation 3', category: 'Konsol', status: 'Rented' },
+                { id: 'PS4-01', name: 'PlayStation 4', category: 'Konsol', status: 'Available' },
+                { id: 'PS4-02', name: 'PlayStation 4', category: 'Konsol', status: 'Available' },
+                { id: 'PS5-01', name: 'PlayStation 5', category: 'Konsol', status: 'Rented' },
+                { id: 'PS5-02', name: 'PlayStation 5', category: 'Konsol', status: 'Available' },
+            ];
+
+            let rentals = [
+                { itemId: 'PS3-01', renterName: 'Budi Santoso', dueDate: '2025-11-20' },
+                { itemId: 'PS5-01', renterName: 'Ana Lestari', dueDate: '2025-11-18' },
+            ];
+
+            // (BARU) Data untuk histori
+            let rentalHistory = [
+                { itemId: 'PS2-02', renterName: 'Cahyo', returnDate: '2025-11-10', status: 'Selesai' }
+            ];
+
+            // === 2. SELEKTOR DOM ===
+            // Mengambil elemen HTML yang akan kita manipulasi
+            const inventoryTableBody = document.getElementById('inventory-table-body');
+            const rentalsTableBody = document.getElementById('rentals-table-body');
+            const itemSelect = document.getElementById('item-select');
+            
+            // Statistik
+            const statTotal = document.getElementById('stat-total-items');
+            const statOnRent = document.getElementById('stat-on-rent');
+            const statAvailable = document.getElementById('stat-available');
+
+            // Modal & Form
+            const modal = document.getElementById('rental-modal');
+            const addRentalBtn = document.getElementById('addRentalBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const rentalForm = document.getElementById('rental-form');
+
+            // (BARU) Selektor tabel histori
+            const historyTableBody = document.getElementById('history-table-body');
+
+            // Selektor Baru untuk Landing Page
+            const landingPage = document.getElementById('landing-page');
+            const mainContent = document.getElementById('main-content');
+            const enterBtn = document.getElementById('enter-dashboard-btn');
+
+
+            // === 3. FUNGSI-FUNGSI UTAMA ===
+
+            /**
+             * Merender (menampilkan) daftar inventaris ke dalam tabel HTML
+             */
+            function renderInventory() {
+                inventoryTableBody.innerHTML = ''; // Kosongkan tabel dulu
+                
+                if (inventory.length === 0) {
+                    inventoryTableBody.innerHTML = `<tr><td colspan="2" class="px-4 py-3 text-center text-gray-500">Inventaris kosong.</td></tr>`;
+                    return;
+                }
+
+                inventory.forEach(item => {
+                    // Tentukan style 'badge' berdasarkan status
+                    const statusClass = item.status === 'Available' 
+                        ? 'bg-green-900 text-green-300' // Diubah ke tema gelap
+                        : 'bg-yellow-900 text-yellow-300'; // Diubah ke tema gelap
+
+                    const row = `
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-100">${item.name}</div> <!-- Diubah ke text-gray-100 -->
+                                <div class="text-xs text-gray-400">${item.category} (#${item.id})</div> <!-- Diubah ke text-gray-400 -->
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                                    ${item.status}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                    inventoryTableBody.innerHTML += row;
+                });
+            }
+
+            /**
+             * (DIPERBAIKI) Fungsi 'renderRentals' yang hilang ditambahkan kembali
+             * Merender (menampilkan) daftar sewa aktif ke dalam tabel HTML
+             */
+            function renderRentals() {
+                rentalsTableBody.innerHTML = ''; // Kosongkan tabel dulu
+
+                if (rentals.length === 0) {
+                    rentalsTableBody.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data sewa aktif.</td></tr>`;
+                    return;
+                }
+
+                rentals.forEach(rental => {
+                    // Cari nama barang dari inventaris berdasarkan ID
+                    const item = inventory.find(inv => inv.id === rental.itemId);
+                    const itemName = item ? item.name : 'Barang Dihapus';
+
+                    const row = `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-100">${itemName}</div>
+                                <div class="text-xs text-gray-400">ID: ${rental.itemId}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${rental.renterName}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${rental.dueDate}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button data-item-id="${rental.itemId}" class="text-red-500 hover:text-red-700 font-semibold transition-colors">
+                                    Kembalikan
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    rentalsTableBody.innerHTML += row;
+                });
+            }
+
+            /**
+             * (BARU) Merender (menampilkan) histori sewa ke dalam tabel HTML
+             */
+            function renderHistory() {
+                historyTableBody.innerHTML = ''; // Kosongkan tabel dulu
+
+                if (rentalHistory.length === 0) {
+                    historyTableBody.innerHTML = `<tr><td colspan="3" class="px-4 py-3 text-center text-gray-500">Belum ada histori.</td></tr>`;
+                    return;
+                }
+
+                // Tampilkan data dari yang terbaru (reverse)
+                rentalHistory.slice().reverse().forEach(rental => {
+                    const item = inventory.find(inv => inv.id === rental.itemId);
+                    const itemName = item ? item.name : 'Barang Dihapus';
+
+                    const row = `
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-100">${itemName}</div>
+                                <div class="text-xs text-gray-400">ID: ${rental.itemId}</div>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-300">${rental.renterName}</td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-600 text-gray-200">
+                                    ${rental.status}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                    historyTableBody.innerHTML += row;
+                });
+            }
+
+            /**
+             * Memperbarui kartu statistik di dashboard
+             */
+            function updateStats() {
+                const totalItems = inventory.length;
+                const onRentItems = inventory.filter(item => item.status === 'Rented').length;
+                const availableItems = totalItems - onRentItems;
+
+                statTotal.textContent = totalItems;
+                statOnRent.textContent = onRentItems;
+                statAvailable.textContent = availableItems;
+            }
+
+            /**
+             * Mengisi <select> di modal dengan barang yang 'Available'
+             */
+            function populateItemSelect() {
+                itemSelect.innerHTML = '<option value="" disabled selected>Pilih barang...</option>'; // Opsi default
+                
+                const availableItems = inventory.filter(item => item.status === 'Available');
+                
+                availableItems.forEach(item => {
+                    const option = `<option value="${item.id}">${item.name} (${item.category})</option>`;
+                    itemSelect.innerHTML += option;
+                });
+            }
+
+            /**
+             * Fungsi gabungan untuk me-refresh semua data di UI
+             */
+            function refreshAllData() {
+                renderInventory();
+                renderRentals();
+                renderHistory(); // (BARU) Panggil render histori
+                updateStats();
+                populateItemSelect(); // Penting agar <select> juga update
+            }
+            
+            /**
+             * Menampilkan modal
+             */
+            function openModal() {
+                rentalForm.reset(); // Bersihkan form setiap kali dibuka
+                populateItemSelect(); // Pastikan daftar barang terbaru
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            /**
+             * Menutup modal
+             */
+            function closeModal() {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            
+            // === 4. EVENT LISTENERS (Penghubung Aksi Pengguna) ===
+
+            // Tampilkan Modal saat tombol "Tambah Sewa" diklik
+            addRentalBtn.addEventListener('click', openModal);
+
+            // Tutup Modal saat tombol "Batal" diklik
+            cancelBtn.addEventListener('click', closeModal);
+
+            // Tutup Modal saat area luar modal (latar belakang) diklik
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) { // Hanya jika klik di latar belakang, bukan di form
+                    closeModal();
+                }
+            });
+
+            // Proses Form saat tombol "Simpan Sewa" (submit) diklik
+            rentalForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Mencegah halaman reload saat form disubmit
+                
+                // Ambil data dari form
+                const formData = new FormData(rentalForm);
+                const newItemId = formData.get('itemId');
+                const newRenterName = formData.get('renterName');
+                const newDueDate = formData.get('dueDate');
+
+                // 1. Tambahkan ke daftar sewa (rentals)
+                rentals.push({
+                    itemId: newItemId,
+                    renterName: newRenterName,
+                    dueDate: newDueDate
+                });
+
+                // 2. Ubah status barang di inventaris (inventory)
+                const rentedItem = inventory.find(item => item.id === newItemId);
+                if (rentedItem) {
+                    rentedItem.status = 'Rented';
+                }
+
+                // 3. Refresh UI
+                refreshAllData();
+
+                // 4. Tutup modal
+                closeModal();
+            });
+
+            // Proses "Kembalikan" Barang (menggunakan event delegation)
+            // Kita pasang listener di 'tbody', tapi cek apakah yang diklik adalah tombol 'Kembalikan'
+            rentalsTableBody.addEventListener('click', (e) => {
+                // Cek apakah elemen yang diklik adalah tombol 'Kembalikan'
+                if (e.target.tagName === 'BUTTON' && e.target.textContent === 'Kembalikan') {
+                    
+                    const itemIdToReturn = e.target.dataset.itemId;
+
+                    // (BARU) 1. Cari data sewa yang akan dipindah
+                    const rentalToMove = rentals.find(rental => rental.itemId === itemIdToReturn);
+
+                    // 2. Ubah status di inventaris (inventory)
+                    const returnedItem = inventory.find(item => item.id === itemIdToReturn);
+                    if (returnedItem) {
+                        returnedItem.status = 'Available';
+                    }
+
+                    // 3. Hapus dari daftar sewa (rentals)
+                    // Kita buat array baru yang isinya semua sewa KECUALI yang ID-nya sama dengan yg dikembalikan
+                    rentals = rentals.filter(rental => rental.itemId !== itemIdToReturn);
+
+                    // (BARU) 4. Tambahkan ke histori
+                    if (rentalToMove) {
+                        rentalHistory.push({
+                            itemId: rentalToMove.itemId,
+                            renterName: rentalToMove.renterName,
+                            returnDate: new Date().toISOString().split('T')[0], // Tanggal hari ini
+                            status: 'Selesai'
+                        });
+                    }
+
+                    // 5. Refresh UI (sebelumnya no 3)
+                    refreshAllData();
+                }
+            });
+
+            // (BARU) Event listener untuk tombol Masuk di Landing Page
+            enterBtn.addEventListener('click', () => {
+                // 1. Beri efek fade out pada landing page
+                landingPage.classList.add('opacity-0');
+                
+                // 2. Tampilkan konten utama
+                mainContent.classList.remove('hidden');
+
+                // 3. Sembunyikan landing page setelah transisi selesai
+                setTimeout(() => {
+                    landingPage.classList.add('hidden');
+                }, 700); // Sesuaikan dengan durasi transisi (duration-700)
+            });
+
+            // === 5. INISIALISASI ===
+            // Panggil fungsi ini saat halaman pertama kali dimuat
+            refreshAllData();
+
+        }); // Akhir dari DOMContentLoaded
+    </script>
+
+</body>
+</html
